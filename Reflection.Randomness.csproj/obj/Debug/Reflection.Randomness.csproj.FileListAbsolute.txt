@@ -1,0 +1,2 @@
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csprojResolveAssemblyReference.cache
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csproj.CoreCompileInputs.cache
