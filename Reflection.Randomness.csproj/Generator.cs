@@ -46,24 +46,30 @@ namespace Reflection.Randomness
 
 		#endregion
 
-		public 
+		public double InitializeNewClass(Random random)
+		{
+			IContinousDistribution distr = Activator.CreateInstance(TypeOfDistribution) as IContinousDistribution;
+
+			return distr.Generate(random);
+		}
 	}
 
 	class Generator<T>
+		where T : new()
 	{
 		public T Generate(Random random)
 		{
-			T result
+			T result = new T();
 			Type currentClassType = typeof(T);
 			var props = currentClassType.GetProperties().Where(p => Attribute.IsDefined(p, typeof(FromDistribution)));
 			foreach (var prop in props)
 			{
 				FromDistribution attribute = prop.GetCustomAttributes(typeof(FromDistribution), false).FirstOrDefault() as FromDistribution;
-				if (attribute != null)
-				{
-					
-				}
+				var x = attribute.InitializeNewClass(random);
+				prop.SetValue(result, x);
 			}
+
+			return result;
 		}
 	}
 }
