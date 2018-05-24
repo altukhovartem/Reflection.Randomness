@@ -1,2 +1,10 @@
-C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csprojResolveAssemblyReference.cache
 C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csproj.CoreCompileInputs.cache
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\Reflection.Randomness.exe.config
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\Reflection.Randomness.exe
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\Reflection.Randomness.pdb
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\nunit.framework.dll
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\nunitlite.dll
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csprojAssemblyReference.cache
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csproj.CopyComplete
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.exe
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.pdb
