@@ -27,37 +27,39 @@ namespace Reflection.Randomness
 		public FromDistribution(Type typeOfDistribution)
 		{
 			this.TypeOfDistribution = typeOfDistribution;
-			Distribution = CreateDistributionInstance();
+			Distribution = CreateInstance();
 		}
 
 		public FromDistribution(Type typeOfDistribution, int X)
-			: this(typeOfDistribution)
 		{
+			this.TypeOfDistribution = TypeOfDistribution;
 			this.X = X;
-
+			Distribution = CreateInstance(X);
 		}
 
 		public FromDistribution(Type typeOfDistribution, int X, int Y)
-			: this(typeOfDistribution, X)
 		{
+			this.TypeOfDistribution = TypeOfDistribution;
+			this.X = X;
 			this.Y = Y;
+			Distribution = CreateInstance(X,Y);
 		}
 
 		public FromDistribution(Type typeOfDistribution, int X, int Y, int Z)
-			: this(typeOfDistribution, X, Y)
 		{
+			this.TypeOfDistribution = TypeOfDistribution;
+			this.X = X;
+			this.Y = Y;
 			this.Z = Z;
+			Distribution = CreateInstance(X,Y,Z);
 		}
 
 		#endregion
 
-		private IContinousDistribution CreateDistributionInstance()
+		private IContinousDistribution CreateInstance(params object[] parametrs)
 		{
-			IContinousDistribution result;
-
-			result = (IContinousDistribution)Activator.CreateInstance(TypeOfDistribution);
-
-			return result;
+			
+			return (IContinousDistribution)Activator.CreateInstance(TypeOfDistribution, parametrs);
 		}
 
 		public double InitializeNewClass(Random random)

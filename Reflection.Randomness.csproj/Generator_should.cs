@@ -7,7 +7,7 @@ namespace Reflection.Randomness
 {
 	public class T1
 	{
-		[FromDistribution(typeof(NormalDistribution), 1, 2)]
+		[FromDistribution(typeof(NormalDistribution), -1, -2)]
 		public double A { get; set; }
 	}
 
