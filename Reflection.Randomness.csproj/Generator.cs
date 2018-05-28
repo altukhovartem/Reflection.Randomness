@@ -17,6 +17,9 @@ namespace Reflection.Randomness
 		public int Y { get; set; }
 		public int Z { get; set; }
 
+		public IContinousDistribution Distribution { get; set; }
+
+
 		#endregion
 
 		#region Ctors
@@ -24,12 +27,14 @@ namespace Reflection.Randomness
 		public FromDistribution(Type typeOfDistribution)
 		{
 			this.TypeOfDistribution = typeOfDistribution;
+			Distribution = CreateDistributionInstance();
 		}
 
 		public FromDistribution(Type typeOfDistribution, int X)
 			: this(typeOfDistribution)
 		{
 			this.X = X;
+
 		}
 
 		public FromDistribution(Type typeOfDistribution, int X, int Y)
@@ -46,11 +51,18 @@ namespace Reflection.Randomness
 
 		#endregion
 
+		private IContinousDistribution CreateDistributionInstance()
+		{
+			IContinousDistribution result;
+
+			result = (IContinousDistribution)Activator.CreateInstance(TypeOfDistribution);
+
+			return result;
+		}
+
 		public double InitializeNewClass(Random random)
 		{
-			IContinousDistribution distr = Activator.CreateInstance(TypeOfDistribution) as IContinousDistribution;
-
-			return distr.Generate(random);
+			return Distribution.Generate(random);
 		}
 	}
 
@@ -64,7 +76,7 @@ namespace Reflection.Randomness
 			var props = currentClassType.GetProperties().Where(p => Attribute.IsDefined(p, typeof(FromDistribution)));
 			foreach (var prop in props)
 			{
-				FromDistribution attribute = prop.GetCustomAttributes(typeof(FromDistribution), false).FirstOrDefault() as FromDistribution;
+				FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
 				var x = attribute.InitializeNewClass(random);
 				prop.SetValue(result, x);
 			}
