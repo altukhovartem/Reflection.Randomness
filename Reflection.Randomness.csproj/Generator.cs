@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Reflection.Randomness
 {
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    class FromDistribution : Attribute
+    public class FromDistribution : Attribute
 	{
 		public Type TypeOfDistribution { get; set; }
 		public IContinousDistribution Distribution { get; set; }
@@ -24,9 +25,12 @@ namespace Reflection.Randomness
 		}
 	}
 
-	class Generator<T>
+	public class Generator<T> 
 		where T : new()
 	{
+		public IContinousDistribution Distribution { get; set; }
+
+
 		public T Generate(Random random)
 		{
 			T result = new T();
@@ -42,27 +46,47 @@ namespace Reflection.Randomness
 			return result;
 		}
 
-		internal ISettable For(Expression<Func<T, object>> p)
+		public ISettable<T> For(Expression<Func<T, object>> p)
 		{
 			// возвращает новый типа на котором можно вызвать фор. Нужен новый типа
 			// после вызова сет у нас будет готовый класс генератор
 			// 
 			var expression = p.Body;
 			var unaryExpression = (UnaryExpression)expression;
+
 			var memberExpression = (MemberExpression)unaryExpression.Operand;
 			var name = memberExpression.Member.Name;
 
 			//operandName = name;
 
-			return (ISettable)new object();
+			return new TempObj<T>(name);  
 		}
+	}
 
-		public interface ISettable
+	public interface ISettable<T>
+		where T : new()
+	{
+		Generator<T> Set(IContinousDistribution distribution);
+	}
+
+	public class TempObj<T> : ISettable<T>
+		where T : new()
+	{
+		public string PropName { get; set; }
+
+		public TempObj(string propName)
 		{
-			void Set();
+			this.PropName = propName;
 		}
 
+		public Generator<T> Set(IContinousDistribution distribution)
+		{
+			Generator<T> currentGenerator = new Generator<T>();
+			Type typeOfDistribution = distribution.GetType();
+			var x = typeOfDistribution.GetFields(); 
 
 
+			return new Generator<T>();
+		}
 	}
 }

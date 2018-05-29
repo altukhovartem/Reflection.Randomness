@@ -6,5 +6,4 @@ C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\nunit.fra
 C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\nunitlite.dll
 C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.exe
 C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.pdb
-C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csprojAssemblyReference.cache
-C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csproj.CopyComplete
+C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\obj\Debug\Reflection.Randomness.csprojResolveAssemblyReference.cache

@@ -82,17 +82,17 @@ namespace Reflection.Randomness
 			Assert.That(forMethod, Is.Null);
 		}
 
-		//[Test]
-		//public void ReplaceGeneratorFor1Field()
-		//{
-		//	var newDistribution = new NormalDistribution(10, 1);
-		//	var generator = new Generator<T2>()
-		//		.For(z => z.A)
-		//		.Set(newDistribution);
-		//	var e = generator.Generate(new Random(seed));
-		//	AssertPropertyFilledWithDistribution(e.A, newDistribution);
-		//	AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
-		//}
+		[Test]
+		public void ReplaceGeneratorFor1Field()
+		{
+			var newDistribution = new NormalDistribution(10, 1);
+			var generator = new Generator<T2>()
+				.For(z => z.A)
+				.Set(newDistribution);
+			var e = generator.Generate(new Random(seed));
+			AssertPropertyFilledWithDistribution(e.A, newDistribution);
+			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
+		}
 
 		//[Test]
 		//public void ReplaceGeneratorFor2Fields()
