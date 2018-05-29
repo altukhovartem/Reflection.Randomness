@@ -73,14 +73,14 @@ namespace Reflection.Randomness
 			AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
 		}
 
-		//[Test]
-		//public void NotAllowForAfterFor()
-		//{
-		//	// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
-		//	var forResult = new Generator<T2>().For(z => z.A);
-		//	var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
-		//	Assert.That(forMethod, Is.Null);
-		//}
+		[Test]
+		public void NotAllowForAfterFor()
+		{
+			// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
+			var forResult = new Generator<T2>().For(z => z.A);
+			var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
+			Assert.That(forMethod, Is.Null);
+		}
 
 		//[Test]
 		//public void ReplaceGeneratorFor1Field()
