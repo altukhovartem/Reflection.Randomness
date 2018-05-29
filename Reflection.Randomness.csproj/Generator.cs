@@ -9,57 +9,12 @@ namespace Reflection.Randomness
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     class FromDistribution : Attribute
 	{
-
-		#region Props
-
 		public Type TypeOfDistribution { get; set; }
-		public int X { get; set; }
-		public int Y { get; set; }
-		public int Z { get; set; }
-
 		public IContinousDistribution Distribution { get; set; }
-
-
-		#endregion
-
-		#region Ctors
-
-		public FromDistribution(Type typeOfDistribution)
+		public FromDistribution(Type typeOfDistribution, params object[] args)
 		{
 			this.TypeOfDistribution = typeOfDistribution;
-			Distribution = CreateInstance();
-		}
-
-		public FromDistribution(Type typeOfDistribution, int X)
-		{
-			this.TypeOfDistribution = TypeOfDistribution;
-			this.X = X;
-			Distribution = CreateInstance(X);
-		}
-
-		public FromDistribution(Type typeOfDistribution, int X, int Y)
-		{
-			this.TypeOfDistribution = TypeOfDistribution;
-			this.X = X;
-			this.Y = Y;
-			Distribution = CreateInstance(X,Y);
-		}
-
-		public FromDistribution(Type typeOfDistribution, int X, int Y, int Z)
-		{
-			this.TypeOfDistribution = TypeOfDistribution;
-			this.X = X;
-			this.Y = Y;
-			this.Z = Z;
-			Distribution = CreateInstance(X,Y,Z);
-		}
-
-		#endregion
-
-		private IContinousDistribution CreateInstance(params object[] parametrs)
-		{
-			
-			return (IContinousDistribution)Activator.CreateInstance(TypeOfDistribution, parametrs);
+			Distribution = (IContinousDistribution)Activator.CreateInstance(typeOfDistribution, args);
 		}
 
 		public double InitializeNewClass(Random random)

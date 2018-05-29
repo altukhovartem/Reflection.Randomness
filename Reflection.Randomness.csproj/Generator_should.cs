@@ -7,7 +7,7 @@ namespace Reflection.Randomness
 {
 	public class T1
 	{
-		[FromDistribution(typeof(NormalDistribution), -1, -2)]
+		[FromDistribution(typeof(NormalDistribution), 1, 2)]
 		public double A { get; set; }
 	}
 
@@ -52,26 +52,26 @@ namespace Reflection.Randomness
 			AssertPropertyFilledWithDistribution(e.A, new NormalDistribution(1, 2));
 		}
 
-		//[Test]
-		//public void GenerateT1TwiceGivesUniqueObjects()
-		//{
-		//	var rnd = new Random(seed);
-		//	var generator = new Generator<T1>();
-		//	var e1 = generator.Generate(rnd);
-		//	var e2 = generator.Generate(rnd);
-		//	Assert.AreNotSame(e1, e2);
-		//}
+		[Test]
+		public void GenerateT1TwiceGivesUniqueObjects()
+		{
+			var rnd = new Random(seed);
+			var generator = new Generator<T1>();
+			var e1 = generator.Generate(rnd);
+			var e2 = generator.Generate(rnd);
+			Assert.AreNotSame(e1, e2);
+		}
 
-		//[Test]
-		//public void GenerateT2()
-		//{
-		//	var rnd = new Random(seed);
-		//	var e = new Generator<T2>().Generate(rnd);
-		//	AssertPropertyFilledWithDistribution(e.A, defaultADistribution);
-		//	AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
-		//	Assert.AreEqual(0.0, e.D, 1e-3, "property without attrubutes should not be changed");
-		//	AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
-		//}
+		[Test]
+		public void GenerateT2()
+		{
+			var rnd = new Random(seed);
+			var e = new Generator<T2>().Generate(rnd);
+			AssertPropertyFilledWithDistribution(e.A, defaultADistribution);
+			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
+			Assert.AreEqual(0.0, e.D, 1e-3, "property without attrubutes should not be changed");
+			AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
+		}
 
 		//[Test]
 		//public void NotAllowForAfterFor()
