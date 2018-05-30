@@ -44,43 +44,43 @@ namespace Reflection.Randomness
 		private static readonly NormalDistribution defaultADistribution = new NormalDistribution(-1, 2);
 		private static readonly NormalDistribution defaultEDistribution = new NormalDistribution();
 
-		[Test]
-		public void GenerateT1()
-		{
-			var rnd = new Random(seed);
-			var e = new Generator<T1>().Generate(rnd);
-			AssertPropertyFilledWithDistribution(e.A, new NormalDistribution(1, 2));
-		}
+		//[Test]
+		//public void GenerateT1()
+		//{
+		//	var rnd = new Random(seed);
+		//	var e = new Generator<T1>().Generate(rnd);
+		//	AssertPropertyFilledWithDistribution(e.A, new NormalDistribution(1, 2));
+		//}
 
-		[Test]
-		public void GenerateT1TwiceGivesUniqueObjects()
-		{
-			var rnd = new Random(seed);
-			var generator = new Generator<T1>();
-			var e1 = generator.Generate(rnd);
-			var e2 = generator.Generate(rnd);
-			Assert.AreNotSame(e1, e2);
-		}
+		//[Test]
+		//public void GenerateT1TwiceGivesUniqueObjects()
+		//{
+		//	var rnd = new Random(seed);
+		//	var generator = new Generator<T1>();
+		//	var e1 = generator.Generate(rnd);
+		//	var e2 = generator.Generate(rnd);
+		//	Assert.AreNotSame(e1, e2);
+		//}
 
-		[Test]
-		public void GenerateT2()
-		{
-			var rnd = new Random(seed);
-			var e = new Generator<T2>().Generate(rnd);
-			AssertPropertyFilledWithDistribution(e.A, defaultADistribution);
-			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
-			Assert.AreEqual(0.0, e.D, 1e-3, "property without attrubutes should not be changed");
-			AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
-		}
+		//[Test]
+		//public void GenerateT2()
+		//{
+		//	var rnd = new Random(seed);
+		//	var e = new Generator<T2>().Generate(rnd);
+		//	AssertPropertyFilledWithDistribution(e.A, defaultADistribution);
+		//	AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
+		//	Assert.AreEqual(0.0, e.D, 1e-3, "property without attrubutes should not be changed");
+		//	AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
+		//}
 
-		[Test]
-		public void NotAllowForAfterFor()
-		{
-			// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
-			var forResult = new Generator<T2>().For(z => z.A);
-			var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
-			Assert.That(forMethod, Is.Null);
-		}
+		//[Test]
+		//public void NotAllowForAfterFor()
+		//{
+		//	// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
+		//	var forResult = new Generator<T2>().For(z => z.A);
+		//	var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
+		//	Assert.That(forMethod, Is.Null);
+		//}
 
 		[Test]
 		public void ReplaceGeneratorFor1Field()
@@ -94,21 +94,21 @@ namespace Reflection.Randomness
 			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
 		}
 
-		//[Test]
-		//public void ReplaceGeneratorFor2Fields()
-		//{
-		//	var rnd = new Random(seed);
-		//	var newADistr = new NormalDistribution(0, 1);
-		//	var newBDistr = new NormalDistribution(1, 1);
-		//	var generator = new Generator<T2>()
-		//		.For(z => z.A)
-		//		.Set(newADistr)
-		//		.For(z => z.B)
-		//		.Set(newBDistr);
-		//	var e = generator.Generate(rnd);
-		//	AssertPropertyFilledWithDistribution(e.A, newADistr);
-		//	AssertPropertyFilledWithDistribution(e.B, newBDistr);
-		//}
+		[Test]
+		public void ReplaceGeneratorFor2Fields()
+		{
+			var rnd = new Random(seed);
+			var newADistr = new NormalDistribution(0, 1);
+			var newBDistr = new NormalDistribution(1, 1);
+			var generator = new Generator<T2>()
+				.For(z => z.A)
+				.Set(newADistr)
+				.For(z => z.B)
+				.Set(newBDistr);
+			var e = generator.Generate(rnd);
+			AssertPropertyFilledWithDistribution(e.A, newADistr);
+			AssertPropertyFilledWithDistribution(e.B, newBDistr);
+		}
 
 		//[Test]
 		//public void SetGeneratorForFieldWithoutAttributes()

@@ -26,51 +26,48 @@ namespace Reflection.Randomness
 	}
 
 	public class Generator<T> 
-		where T : new()
+		where T : class
 	{
 		public IContinousDistribution Distribution { get; set; }
 
 
 		public T Generate(Random random)
 		{
-			T result = new T();
-			Type currentClassType = typeof(T);
-			var props = currentClassType.GetProperties().Where(p => Attribute.IsDefined(p, typeof(FromDistribution)));
+			Type generatorType = typeof(T);
+			object generatorInstance = Activator.CreateInstance(generatorType);
+			var props = generatorType.GetProperties().Where(p => Attribute.IsDefined(p, typeof(FromDistribution)));
 			foreach (var prop in props)
 			{
 				FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
 				var x = attribute.InitializeNewClass(random);
-				prop.SetValue(result, x);
+				prop.SetValue(generatorInstance, x);
 			}
 
-			return result;
+			return generatorInstance as T;
 		}
 
 		public ISettable<T> For(Expression<Func<T, object>> p)
 		{
-			// возвращает новый типа на котором можно вызвать фор. Нужен новый типа
-			// после вызова сет у нас будет готовый класс генератор
-			// 
+			var type = p.GetType();
+
 			var expression = p.Body;
 			var unaryExpression = (UnaryExpression)expression;
 
 			var memberExpression = (MemberExpression)unaryExpression.Operand;
 			var name = memberExpression.Member.Name;
 
-			//operandName = name;
-
 			return new TempObj<T>(name);  
 		}
 	}
 
 	public interface ISettable<T>
-		where T : new()
+		where T : class
 	{
 		Generator<T> Set(IContinousDistribution distribution);
 	}
 
 	public class TempObj<T> : ISettable<T>
-		where T : new()
+		where T : class
 	{
 		public string PropName { get; set; }
 
@@ -81,10 +78,13 @@ namespace Reflection.Randomness
 
 		public Generator<T> Set(IContinousDistribution distribution)
 		{
-			Generator<T> currentGenerator = new Generator<T>();
-			Type typeOfDistribution = distribution.GetType();
-			var x = typeOfDistribution.GetFields(); 
+			//Generator<T> currentGenerator = new Generator<T>();
+			//Type typeOfDistribution = distribution.GetType();
+			//var x = typeOfDistribution.GetFields(); 
 
+			var generatorInst = Activator.CreateInstance(typeof(T));
+			PropertyInfo prop = typeof(T).GetProperty(PropName);
+		
 
 			return new Generator<T>();
 		}
