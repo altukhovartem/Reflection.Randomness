@@ -28,7 +28,20 @@ namespace Reflection.Randomness
 	public class Generator<T> 
 		where T : class
 	{
-		public IContinousDistribution Distribution { get; set; }
+		public int MyProperty { get; set; }
+		public IContinousDistribution DistributionType { get; set; }
+
+		static Dictionary<PropertyInfo, IContinousDistribution> dictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
+
+		static Generator()
+		{
+			
+		}
+
+		public Generator()
+		{
+
+		}
 
 
 		public T Generate(Random random)
@@ -57,6 +70,7 @@ namespace Reflection.Randomness
 			var name = memberExpression.Member.Name;
 
 			return new TempObj<T>(name);  
+			// передать все свойство
 		}
 	}
 
@@ -78,13 +92,13 @@ namespace Reflection.Randomness
 
 		public Generator<T> Set(IContinousDistribution distribution)
 		{
-			//Generator<T> currentGenerator = new Generator<T>();
-			//Type typeOfDistribution = distribution.GetType();
-			//var x = typeOfDistribution.GetFields(); 
+			//у тебя есть два способа сообщить генератору о том какие распределения проассоциированы с какими полями
+			//1. либо непосредственно на само поле повесить атрибут
+			//2. либо лично генератору подсказать
 
-			var generatorInst = Activator.CreateInstance(typeof(T));
-			PropertyInfo prop = typeof(T).GetProperty(PropName);
-		
+			//1: первый способ хорош если этот класс на поле которого ты вешаешь в твоем распоряжении и ты можешь на его поля повесить атрибут
+			//2: второй способ хорош когда ты не можешь повесить на поле атрибут, потому что это не твой класс, а класс из какой то другой библиотеки
+			
 
 			return new Generator<T>();
 		}
