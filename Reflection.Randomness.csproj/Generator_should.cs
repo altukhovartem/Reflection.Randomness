@@ -52,15 +52,15 @@ namespace Reflection.Randomness
 		//	AssertPropertyFilledWithDistribution(e.A, new NormalDistribution(1, 2));
 		//}
 
-		//[Test]
-		//public void GenerateT1TwiceGivesUniqueObjects()
-		//{
-		//	var rnd = new Random(seed);
-		//	var generator = new Generator<T1>();
-		//	var e1 = generator.Generate(rnd);
-		//	var e2 = generator.Generate(rnd);
-		//	Assert.AreNotSame(e1, e2);
-		//}
+		[Test]
+		public void GenerateT1TwiceGivesUniqueObjects()
+		{
+			var rnd = new Random(seed);
+			var generator = new Generator<T1>();
+			var e1 = generator.Generate(rnd);
+			var e2 = generator.Generate(rnd);
+			Assert.AreNotSame(e1, e2);
+		}
 
 		//[Test]
 		//public void GenerateT2()
@@ -82,17 +82,17 @@ namespace Reflection.Randomness
 		//	Assert.That(forMethod, Is.Null);
 		//}
 
-		[Test]
-		public void ReplaceGeneratorFor1Field()
-		{
-			var newDistribution = new NormalDistribution(10, 1);
-			var generator = new Generator<T2>()
-				.For(z => z.A)
-				.Set(newDistribution);
-			var e = generator.Generate(new Random(seed));
-			AssertPropertyFilledWithDistribution(e.A, newDistribution);
-			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
-		}
+		//[Test]
+		//public void ReplaceGeneratorFor1Field()
+		//{
+		//	var newDistribution = new NormalDistribution(10, 1);
+		//	var generator = new Generator<T2>()
+		//		.For(z => z.A)
+		//		.Set(newDistribution);
+		//	var e = generator.Generate(new Random(seed));
+		//	AssertPropertyFilledWithDistribution(e.A, newDistribution);
+		//	AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
+		//}
 
 		[Test]
 		public void ReplaceGeneratorFor2Fields()

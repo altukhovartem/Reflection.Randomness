@@ -13,13 +13,14 @@ namespace Reflection.Randomness
 	{
 		public Type TypeOfDistribution { get; set; }
 		public IContinousDistribution Distribution { get; set; }
+
 		public FromDistribution(Type typeOfDistribution, params object[] args)
 		{
 			this.TypeOfDistribution = typeOfDistribution;
 			Distribution = (IContinousDistribution)Activator.CreateInstance(typeOfDistribution, args);
 		}
 
-		public double InitializeNewClass(Random random)
+		public double GetDistributionValue(Random random)
 		{
 			return Distribution.Generate(random);
 		}
@@ -29,13 +30,20 @@ namespace Reflection.Randomness
 		where T : class
 	{
 		public int MyProperty { get; set; }
-		public IContinousDistribution DistributionType { get; set; }
 
-		static Dictionary<PropertyInfo, IContinousDistribution> dictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
+		static Dictionary<PropertyInfo, IContinousDistribution> staticDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
+		public Dictionary<PropertyInfo, IContinousDistribution> dynamicDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
+
 
 		static Generator()
 		{
-			
+			Type typeOfCurrentClass = typeof(T);
+			PropertyInfo[] collectionOfProperties = typeOfCurrentClass.GetProperties();
+			foreach (var prop in collectionOfProperties)
+			{
+				FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
+				staticDictionary.Add(prop, attribute.Distribution);
+			}
 		}
 
 		public Generator()
@@ -52,7 +60,7 @@ namespace Reflection.Randomness
 			foreach (var prop in props)
 			{
 				FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
-				var x = attribute.InitializeNewClass(random);
+				var x = attribute.GetDistributionValue(random);
 				prop.SetValue(generatorInstance, x);
 			}
 
