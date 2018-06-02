@@ -44,13 +44,13 @@ namespace Reflection.Randomness
 		private static readonly NormalDistribution defaultADistribution = new NormalDistribution(-1, 2);
 		private static readonly NormalDistribution defaultEDistribution = new NormalDistribution();
 
-		//[Test]
-		//public void GenerateT1()
-		//{
-		//	var rnd = new Random(seed);
-		//	var e = new Generator<T1>().Generate(rnd);
-		//	AssertPropertyFilledWithDistribution(e.A, new NormalDistribution(1, 2));
-		//}
+		[Test]
+		public void GenerateT1()
+		{
+			var rnd = new Random(seed);
+			var e = new Generator<T1>().Generate(rnd);
+			AssertPropertyFilledWithDistribution(e.A, new NormalDistribution(1, 2));
+		}
 
 		[Test]
 		public void GenerateT1TwiceGivesUniqueObjects()
@@ -62,37 +62,37 @@ namespace Reflection.Randomness
 			Assert.AreNotSame(e1, e2);
 		}
 
-		//[Test]
-		//public void GenerateT2()
-		//{
-		//	var rnd = new Random(seed);
-		//	var e = new Generator<T2>().Generate(rnd);
-		//	AssertPropertyFilledWithDistribution(e.A, defaultADistribution);
-		//	AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
-		//	Assert.AreEqual(0.0, e.D, 1e-3, "property without attrubutes should not be changed");
-		//	AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
-		//}
+		[Test]
+		public void GenerateT2()
+		{
+			var rnd = new Random(seed);
+			var e = new Generator<T2>().Generate(rnd);
+			AssertPropertyFilledWithDistribution(e.A, defaultADistribution);
+			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
+			Assert.AreEqual(0.0, e.D, 1e-3, "property without attrubutes should not be changed");
+			AssertPropertyFilledWithDistribution(e.E, defaultEDistribution);
+		}
 
-		//[Test]
-		//public void NotAllowForAfterFor()
-		//{
-		//	// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
-		//	var forResult = new Generator<T2>().For(z => z.A);
-		//	var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
-		//	Assert.That(forMethod, Is.Null);
-		//}
+		[Test]
+		public void NotAllowForAfterFor()
+		{
+			// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
+			var forResult = new Generator<T2>().For(z => z.A);
+			var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
+			Assert.That(forMethod, Is.Null);
+		}
 
-		//[Test]
-		//public void ReplaceGeneratorFor1Field()
-		//{
-		//	var newDistribution = new NormalDistribution(10, 1);
-		//	var generator = new Generator<T2>()
-		//		.For(z => z.A)
-		//		.Set(newDistribution);
-		//	var e = generator.Generate(new Random(seed));
-		//	AssertPropertyFilledWithDistribution(e.A, newDistribution);
-		//	AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
-		//}
+		[Test]
+		public void ReplaceGeneratorFor1Field()
+		{
+			var newDistribution = new NormalDistribution(10, 1);
+			var generator = new Generator<T2>()
+				.For(z => z.A)
+				.Set(newDistribution);
+			var e = generator.Generate(new Random(seed));
+			AssertPropertyFilledWithDistribution(e.A, newDistribution);
+			AssertPropertyFilledWithDistribution(e.B, defaultBDistribution);
+		}
 
 		[Test]
 		public void ReplaceGeneratorFor2Fields()
@@ -110,21 +110,21 @@ namespace Reflection.Randomness
 			AssertPropertyFilledWithDistribution(e.B, newBDistr);
 		}
 
-		//[Test]
-		//public void SetGeneratorForFieldWithoutAttributes()
-		//{
-		//	var rnd = new Random(seed);
-		//	var generator = new Generator<T2>()
-		//		.For(z => z.D)
-		//		.Set(new NormalDistribution());
-		//	var e = generator.Generate(rnd);
-		//	AssertPropertyFilledWithDistribution(e.D, new NormalDistribution());
-		//}
+		[Test]
+		public void SetGeneratorForFieldWithoutAttributes()
+		{
+			var rnd = new Random(seed);
+			var generator = new Generator<T2>()
+				.For(z => z.D)
+				.Set(new NormalDistribution());
+			var e = generator.Generate(rnd);
+			AssertPropertyFilledWithDistribution(e.D, new NormalDistribution());
+		}
 
 		//[Test]
 		//public void FailWithInformativeMessage_OnIncorrectAttributeUsage()
 		//{
-		//	// ReSharper disable once ObjectCreationAsStatement
+		//	ReSharper disable once ObjectCreationAsStatement
 		//	var ex = Assert.Throws<ArgumentException>(() => new Generator<T3>().Generate(new Random(seed)));
 		//	Assert.That(ex.Message, Contains.Substring("NormalDistribution"),
 		//		"Exception message should be informative and contain at least the name of problematic type");

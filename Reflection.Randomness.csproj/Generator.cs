@@ -26,14 +26,21 @@ namespace Reflection.Randomness
 		}
 	}
 
-	public class Generator<T> 
+	public class Generator<T>
 		where T : class
 	{
-		public int MyProperty { get; set; }
-
 		static Dictionary<PropertyInfo, IContinousDistribution> staticDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
 		public Dictionary<PropertyInfo, IContinousDistribution> dynamicDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
 
+		public Generator()
+		{
+
+		}
+
+		public Generator(KeyValuePair<PropertyInfo, IContinousDistribution> pair)
+		{
+			staticDictionary[pair.Key] = pair.Value;
+		}
 
 		static Generator()
 		{
@@ -41,44 +48,49 @@ namespace Reflection.Randomness
 			PropertyInfo[] collectionOfProperties = typeOfCurrentClass.GetProperties();
 			foreach (var prop in collectionOfProperties)
 			{
-				FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
-				staticDictionary.Add(prop, attribute.Distribution);
+				FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
+				staticDictionary.Add(prop, attribute?.Distribution);
 			}
 		}
 
-		public Generator()
-		{
 
-		}
 
+
+		//public T Generate(Random random)
+		//{
+		//	object generatorInstance = Activator.CreateInstance(typeof(T));
+		//	var props = typeof(T).GetProperties().Where(p => Attribute.IsDefined(p, typeof(FromDistribution)));
+		//	foreach (var prop in props)
+		//	{
+		//		FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
+		//		var valueOfDistribution = attribute.GetDistributionValue(random);
+		//		prop.SetValue(generatorInstance, valueOfDistribution);
+		//	}
+
+		//	return generatorInstance as T;
+		//}
 
 		public T Generate(Random random)
 		{
-			Type generatorType = typeof(T);
-			object generatorInstance = Activator.CreateInstance(generatorType);
-			var props = generatorType.GetProperties().Where(p => Attribute.IsDefined(p, typeof(FromDistribution)));
-			foreach (var prop in props)
+			object generatorInstance = Activator.CreateInstance(typeof(T));
+			foreach (var item in staticDictionary.Where(k => k.Value != null))
 			{
-				FromDistribution attribute = (FromDistribution)Attribute.GetCustomAttribute(prop, typeof(FromDistribution));
-				var x = attribute.GetDistributionValue(random);
-				prop.SetValue(generatorInstance, x);
+				IContinousDistribution distr = item.Value;
+				item.Key.SetValue(generatorInstance, distr.Generate(random));
 			}
-
 			return generatorInstance as T;
 		}
 
 		public ISettable<T> For(Expression<Func<T, object>> p)
 		{
-			var type = p.GetType();
+			Type type = p.GetType();
+			Expression currentExpression = p.Body;
+			UnaryExpression unaryExpression = (UnaryExpression)currentExpression;
+			MemberExpression memberExpression = (MemberExpression)unaryExpression.Operand;
+			string name = memberExpression.Member.Name;
+			PropertyInfo prop = typeof(T).GetProperty(name);
 
-			var expression = p.Body;
-			var unaryExpression = (UnaryExpression)expression;
-
-			var memberExpression = (MemberExpression)unaryExpression.Operand;
-			var name = memberExpression.Member.Name;
-
-			return new TempObj<T>(name);  
-			// передать все свойство
+			return new TempObj<T>(prop);  
 		}
 	}
 
@@ -91,11 +103,11 @@ namespace Reflection.Randomness
 	public class TempObj<T> : ISettable<T>
 		where T : class
 	{
-		public string PropName { get; set; }
+		public PropertyInfo classProperty { get; set; }
 
-		public TempObj(string propName)
+		public TempObj(PropertyInfo property)
 		{
-			this.PropName = propName;
+			this.classProperty = property;
 		}
 
 		public Generator<T> Set(IContinousDistribution distribution)
@@ -106,9 +118,9 @@ namespace Reflection.Randomness
 
 			//1: первый способ хорош если этот класс на поле которого ты вешаешь в твоем распоряжении и ты можешь на его поля повесить атрибут
 			//2: второй способ хорош когда ты не можешь повесить на поле атрибут, потому что это не твой класс, а класс из какой то другой библиотеки
-			
 
-			return new Generator<T>();
+			KeyValuePair<PropertyInfo, IContinousDistribution> pair = new KeyValuePair<PropertyInfo, IContinousDistribution>(classProperty, distribution);
+			return new Generator<T>(pair);
 		}
 	}
 }
