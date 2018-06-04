@@ -37,11 +37,6 @@ namespace Reflection.Randomness
 
 		}
 
-		public Generator(KeyValuePair<PropertyInfo, IContinousDistribution> pair)
-		{
-			staticDictionary[pair.Key] = pair.Value;
-		}
-
 		static Generator()
 		{
 			Type typeOfCurrentClass = typeof(T);
@@ -53,7 +48,29 @@ namespace Reflection.Randomness
 			}
 		}
 
+		public T Generate(Random random)
+		{
+			object generatorInstance = Activator.CreateInstance(typeof(T));
+			PropertyInfo[] props = typeof(T).GetProperties();
+			double valueOfDistribution;
 
+			foreach (var prop in props)
+			{
+				if (dynamicDictionary.ContainsKey(prop) && dynamicDictionary[prop] != null )
+				{
+					valueOfDistribution = dynamicDictionary[prop].Generate(random);
+					prop.SetValue(generatorInstance, valueOfDistribution);
+
+				}
+				else if (staticDictionary[prop] != null)
+				{
+					valueOfDistribution = staticDictionary[prop].Generate(random);
+					prop.SetValue(generatorInstance, valueOfDistribution);
+				}
+			}
+
+			return generatorInstance as T;
+		}
 
 
 		//public T Generate(Random random)
@@ -70,16 +87,7 @@ namespace Reflection.Randomness
 		//	return generatorInstance as T;
 		//}
 
-		public T Generate(Random random)
-		{
-			object generatorInstance = Activator.CreateInstance(typeof(T));
-			foreach (var item in staticDictionary.Where(k => k.Value != null))
-			{
-				IContinousDistribution distr = item.Value;
-				item.Key.SetValue(generatorInstance, distr.Generate(random));
-			}
-			return generatorInstance as T;
-		}
+	
 
 		public ISettable<T> For(Expression<Func<T, object>> p)
 		{
@@ -90,7 +98,7 @@ namespace Reflection.Randomness
 			string name = memberExpression.Member.Name;
 			PropertyInfo prop = typeof(T).GetProperty(name);
 
-			return new TempObj<T>(prop);  
+			return new TempObj<T>(prop, this);  
 		}
 	}
 
@@ -104,10 +112,12 @@ namespace Reflection.Randomness
 		where T : class
 	{
 		public PropertyInfo classProperty { get; set; }
+		public Generator<T> currentGenerator { get; set; }
 
-		public TempObj(PropertyInfo property)
+		public TempObj(PropertyInfo property, Generator<T> generator)
 		{
 			this.classProperty = property;
+			this.currentGenerator = generator;
 		}
 
 		public Generator<T> Set(IContinousDistribution distribution)
@@ -119,8 +129,8 @@ namespace Reflection.Randomness
 			//1: первый способ хорош если этот класс на поле которого ты вешаешь в твоем распоряжении и ты можешь на его поля повесить атрибут
 			//2: второй способ хорош когда ты не можешь повесить на поле атрибут, потому что это не твой класс, а класс из какой то другой библиотеки
 
-			KeyValuePair<PropertyInfo, IContinousDistribution> pair = new KeyValuePair<PropertyInfo, IContinousDistribution>(classProperty, distribution);
-			return new Generator<T>(pair);
+			currentGenerator.dynamicDictionary.Add(classProperty, distribution);
+			return currentGenerator;
 		}
 	}
 }

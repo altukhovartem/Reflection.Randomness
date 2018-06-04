@@ -1,93 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" name="Reflection.Randomness.exe" fullname="C:/MyRepo/Reflection.Randomness/Reflection.Randomness.csproj/bin/Debug/Reflection.Randomness.exe" testcasecount="8" result="Failed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.404998" total="8" passed="7" failed="1" inconclusive="0" skipped="0" asserts="13" random-seed="637467222">
+<test-run id="2" name="Reflection.Randomness.exe" fullname="C:/MyRepo/Reflection.Randomness/Reflection.Randomness.csproj/bin/Debug/Reflection.Randomness.exe" testcasecount="7" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.483478" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="12" random-seed="820151296">
   <command-line><![CDATA["C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug\Reflection.Randomness.exe"   ]]></command-line>
   <filter />
-  <test-suite type="Assembly" id="1009" name="Reflection.Randomness.exe" fullname="C:/MyRepo/Reflection.Randomness/Reflection.Randomness.csproj/bin/Debug/Reflection.Randomness.exe" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.404998" total="8" passed="7" failed="1" warnings="0" inconclusive="0" skipped="0" asserts="13">
+  <test-suite type="Assembly" id="1008" name="Reflection.Randomness.exe" fullname="C:/MyRepo/Reflection.Randomness/Reflection.Randomness.csproj/bin/Debug/Reflection.Randomness.exe" runstate="Runnable" testcasecount="7" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.483478" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="12">
     <environment framework-version="3.6.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug" machine-name="DESKTOP-MJHFLF4" user="altuk" user-domain="DESKTOP-MJHFLF4" culture="en-US" uiculture="en-US" os-architecture="x86" />
     <settings>
       <setting name="WorkDirectory" value="C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\bin\Debug" />
       <setting name="NumberOfTestWorkers" value="4" />
     </settings>
     <properties>
-      <property name="_PID" value="8712" />
+      <property name="_PID" value="5216" />
       <property name="_APPDOMAIN" value="Reflection.Randomness.exe" />
     </properties>
-    <failure>
-      <message><![CDATA[One or more child tests had errors]]></message>
-    </failure>
-    <test-suite type="TestSuite" id="1010" name="Reflection" fullname="Reflection" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.362701" total="8" passed="7" failed="1" warnings="0" inconclusive="0" skipped="0" asserts="13">
-      <failure>
-        <message><![CDATA[One or more child tests had errors]]></message>
-      </failure>
-      <test-suite type="TestSuite" id="1011" name="Randomness" fullname="Reflection.Randomness" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.359061" total="8" passed="7" failed="1" warnings="0" inconclusive="0" skipped="0" asserts="13">
-        <failure>
-          <message><![CDATA[One or more child tests had errors]]></message>
-        </failure>
-        <test-suite type="TestFixture" id="1000" name="Generator_should" fullname="Reflection.Randomness.Generator_should" classname="Reflection.Randomness.Generator_should" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.347205" total="8" passed="7" failed="1" warnings="0" inconclusive="0" skipped="0" asserts="13">
-          <failure>
-            <message><![CDATA[One or more child tests had errors]]></message>
-          </failure>
-          <test-case id="1008" name="FailWithInformativeMessage_OnIncorrectAttributeUsage" fullname="Reflection.Randomness.Generator_should.FailWithInformativeMessage_OnIncorrectAttributeUsage" methodname="FailWithInformativeMessage_OnIncorrectAttributeUsage" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1920984632" result="Failed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.186557" asserts="1">
-            <failure>
-              <message><![CDATA[  Expected: <System.ArgumentException>
-  But was:  <System.TypeInitializationException: The type initializer for 'Reflection.Randomness.Generator`1' threw an exception. ---> System.MissingMethodException: Constructor on type 'Reflection.Randomness.NormalDistribution' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Reflection.Randomness.FromDistribution..ctor(Type typeOfDistribution, Object[] args) in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator.cs:line 20
-   at System.Reflection.CustomAttribute._CreateCaObject(RuntimeModule pModule, IRuntimeMethodInfo pCtor, Byte** ppBlob, Byte* pEndBlob, Int32* pcNamedArgs)
-   at System.Reflection.CustomAttribute.CreateCaObject(RuntimeModule module, IRuntimeMethodInfo ctor, IntPtr& blob, IntPtr blobEnd, Int32& namedArgs)
-   at System.Reflection.CustomAttribute.GetCustomAttributes(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, Int32 pcaCount, RuntimeType attributeFilterType, Boolean mustBeInheritable, IList derivedAttributes, Boolean isDecoratedTargetSecurityTransparent)
-   at System.Reflection.CustomAttribute.GetCustomAttributes(RuntimePropertyInfo property, RuntimeType caType)
-   at System.Reflection.RuntimePropertyInfo.GetCustomAttributes(Type attributeType, Boolean inherit)
-   at System.Attribute.InternalGetCustomAttributes(PropertyInfo element, Type type, Boolean inherit)
-   at System.Attribute.GetCustomAttributes(MemberInfo element, Type type, Boolean inherit)
-   at System.Attribute.GetCustomAttribute(MemberInfo element, Type attributeType, Boolean inherit)
-   at System.Attribute.GetCustomAttribute(MemberInfo element, Type attributeType)
-   at Reflection.Randomness.Generator`1..cctor() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator.cs:line 51
-   --- End of inner exception stack trace ---
-   at Reflection.Randomness.Generator`1..ctor() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator.cs:line 33
-   at Reflection.Randomness.Generator_should.<>c.<FailWithInformativeMessage_OnIncorrectAttributeUsage>b__11_0() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator_should.cs:line 128
-   at NUnit.Framework.Assert.Throws(IResolveConstraint expression, TestDelegate code, String message, Object[] args)>
-]]></message>
-              <stack-trace><![CDATA[at Reflection.Randomness.Generator_should.FailWithInformativeMessage_OnIncorrectAttributeUsage() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator_should.cs:line 128
-]]></stack-trace>
-            </failure>
-            <assertions>
-              <assertion result="Failed">
-                <message><![CDATA[  Expected: <System.ArgumentException>
-  But was:  <System.TypeInitializationException: The type initializer for 'Reflection.Randomness.Generator`1' threw an exception. ---> System.MissingMethodException: Constructor on type 'Reflection.Randomness.NormalDistribution' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Reflection.Randomness.FromDistribution..ctor(Type typeOfDistribution, Object[] args) in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator.cs:line 20
-   at System.Reflection.CustomAttribute._CreateCaObject(RuntimeModule pModule, IRuntimeMethodInfo pCtor, Byte** ppBlob, Byte* pEndBlob, Int32* pcNamedArgs)
-   at System.Reflection.CustomAttribute.CreateCaObject(RuntimeModule module, IRuntimeMethodInfo ctor, IntPtr& blob, IntPtr blobEnd, Int32& namedArgs)
-   at System.Reflection.CustomAttribute.GetCustomAttributes(RuntimeModule decoratedModule, Int32 decoratedMetadataToken, Int32 pcaCount, RuntimeType attributeFilterType, Boolean mustBeInheritable, IList derivedAttributes, Boolean isDecoratedTargetSecurityTransparent)
-   at System.Reflection.CustomAttribute.GetCustomAttributes(RuntimePropertyInfo property, RuntimeType caType)
-   at System.Reflection.RuntimePropertyInfo.GetCustomAttributes(Type attributeType, Boolean inherit)
-   at System.Attribute.InternalGetCustomAttributes(PropertyInfo element, Type type, Boolean inherit)
-   at System.Attribute.GetCustomAttributes(MemberInfo element, Type type, Boolean inherit)
-   at System.Attribute.GetCustomAttribute(MemberInfo element, Type attributeType, Boolean inherit)
-   at System.Attribute.GetCustomAttribute(MemberInfo element, Type attributeType)
-   at Reflection.Randomness.Generator`1..cctor() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator.cs:line 51
-   --- End of inner exception stack trace ---
-   at Reflection.Randomness.Generator`1..ctor() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator.cs:line 33
-   at Reflection.Randomness.Generator_should.<>c.<FailWithInformativeMessage_OnIncorrectAttributeUsage>b__11_0() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator_should.cs:line 128
-   at NUnit.Framework.Assert.Throws(IResolveConstraint expression, TestDelegate code, String message, Object[] args)>
-]]></message>
-                <stack-trace><![CDATA[at Reflection.Randomness.Generator_should.FailWithInformativeMessage_OnIncorrectAttributeUsage() in C:\MyRepo\Reflection.Randomness\Reflection.Randomness.csproj\Generator_should.cs:line 128
-]]></stack-trace>
-              </assertion>
-            </assertions>
-          </test-case>
-          <test-case id="1001" name="GenerateT1" fullname="Reflection.Randomness.Generator_should.GenerateT1" methodname="GenerateT1" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1642554989" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.060689" asserts="1" />
-          <test-case id="1002" name="GenerateT1TwiceGivesUniqueObjects" fullname="Reflection.Randomness.Generator_should.GenerateT1TwiceGivesUniqueObjects" methodname="GenerateT1TwiceGivesUniqueObjects" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="796000441" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.015882" asserts="1" />
-          <test-case id="1003" name="GenerateT2" fullname="Reflection.Randomness.Generator_should.GenerateT2" methodname="GenerateT2" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="638725125" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.013144" asserts="4" />
-          <test-case id="1004" name="NotAllowForAfterFor" fullname="Reflection.Randomness.Generator_should.NotAllowForAfterFor" methodname="NotAllowForAfterFor" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1360871074" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.007266" asserts="1" />
-          <test-case id="1005" name="ReplaceGeneratorFor1Field" fullname="Reflection.Randomness.Generator_should.ReplaceGeneratorFor1Field" methodname="ReplaceGeneratorFor1Field" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1614742450" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.003481" asserts="2" />
-          <test-case id="1006" name="ReplaceGeneratorFor2Fields" fullname="Reflection.Randomness.Generator_should.ReplaceGeneratorFor2Fields" methodname="ReplaceGeneratorFor2Fields" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1349181883" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.002308" asserts="2" />
-          <test-case id="1007" name="SetGeneratorForFieldWithoutAttributes" fullname="Reflection.Randomness.Generator_should.SetGeneratorForFieldWithoutAttributes" methodname="SetGeneratorForFieldWithoutAttributes" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="224541749" result="Passed" start-time="2018-06-02 14:39:15Z" end-time="2018-06-02 14:39:15Z" duration="0.001946" asserts="1" />
+    <test-suite type="TestSuite" id="1009" name="Reflection" fullname="Reflection" runstate="Runnable" testcasecount="7" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.405937" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="12">
+      <test-suite type="TestSuite" id="1010" name="Randomness" fullname="Reflection.Randomness" runstate="Runnable" testcasecount="7" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.400948" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="12">
+        <test-suite type="TestFixture" id="1000" name="Generator_should" fullname="Reflection.Randomness.Generator_should" classname="Reflection.Randomness.Generator_should" runstate="Runnable" testcasecount="7" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.378510" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="12">
+          <test-case id="1001" name="GenerateT1" fullname="Reflection.Randomness.Generator_should.GenerateT1" methodname="GenerateT1" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1062422731" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.178909" asserts="1" />
+          <test-case id="1002" name="GenerateT1TwiceGivesUniqueObjects" fullname="Reflection.Randomness.Generator_should.GenerateT1TwiceGivesUniqueObjects" methodname="GenerateT1TwiceGivesUniqueObjects" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="136016299" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.037572" asserts="1" />
+          <test-case id="1003" name="GenerateT2" fullname="Reflection.Randomness.Generator_should.GenerateT2" methodname="GenerateT2" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="525605361" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.014939" asserts="4" />
+          <test-case id="1004" name="NotAllowForAfterFor" fullname="Reflection.Randomness.Generator_should.NotAllowForAfterFor" methodname="NotAllowForAfterFor" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1553839523" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.071670" asserts="1" />
+          <test-case id="1005" name="ReplaceGeneratorFor1Field" fullname="Reflection.Randomness.Generator_should.ReplaceGeneratorFor1Field" methodname="ReplaceGeneratorFor1Field" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1581372112" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.002758" asserts="2" />
+          <test-case id="1006" name="ReplaceGeneratorFor2Fields" fullname="Reflection.Randomness.Generator_should.ReplaceGeneratorFor2Fields" methodname="ReplaceGeneratorFor2Fields" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="1406792848" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.002496" asserts="2" />
+          <test-case id="1007" name="SetGeneratorForFieldWithoutAttributes" fullname="Reflection.Randomness.Generator_should.SetGeneratorForFieldWithoutAttributes" methodname="SetGeneratorForFieldWithoutAttributes" classname="Reflection.Randomness.Generator_should" runstate="Runnable" seed="770581470" result="Passed" start-time="2018-06-04 20:08:38Z" end-time="2018-06-04 20:08:38Z" duration="0.001853" asserts="1" />
         </test-suite>
       </test-suite>
     </test-suite>
