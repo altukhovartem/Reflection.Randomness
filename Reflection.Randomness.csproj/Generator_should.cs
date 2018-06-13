@@ -76,7 +76,7 @@ namespace Reflection.Randomness
 		//[Test]
 		//public void NotAllowForAfterFor()
 		//{
-		//	// generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
+		//	 generator.For(z => z.A).For(z => z.B).Set(d) ← is not valid!
 		//	var forResult = new Generator<T2>().For(z => z.A);
 		//	var forMethod = forResult.GetType().GetMethods().FirstOrDefault(m => m.Name == "For");
 		//	Assert.That(forMethod, Is.Null);
@@ -110,25 +110,25 @@ namespace Reflection.Randomness
 		//	AssertPropertyFilledWithDistribution(e.B, newBDistr);
 		//}
 
-		//[Test]
-		//public void SetGeneratorForFieldWithoutAttributes()
-		//{
-		//	var rnd = new Random(seed);
-		//	var generator = new Generator<T2>()
-		//		.For(z => z.D)
-		//		.Set(new NormalDistribution());
-		//	var e = generator.Generate(rnd);
-		//	AssertPropertyFilledWithDistribution(e.D, new NormalDistribution());
-		//}
-
 		[Test]
-		public void FailWithInformativeMessage_OnIncorrectAttributeUsage()
+		public void SetGeneratorForFieldWithoutAttributes()
 		{
-			//ReSharper disable once ObjectCreationAsStatement
-			var ex = Assert.Throws<ArgumentException>(() => new Generator<T3>().Generate(new Random(seed)));
-			Assert.That(ex.Message, Contains.Substring("NormalDistribution"),
-				"Exception message should be informative and contain at least the name of problematic type");
+			var rnd = new Random(seed);
+			var generator = new Generator<T2>()
+				.For(z => z.D)
+				.Set(new NormalDistribution());
+			var e = generator.Generate(rnd);
+			AssertPropertyFilledWithDistribution(e.D, new NormalDistribution());
 		}
+
+		//[Test]
+		//public void FailWithInformativeMessage_OnIncorrectAttributeUsage()
+		//{
+		//	//ReSharper disable once ObjectCreationAsStatement
+		//	var ex = Assert.Throws<ArgumentException>(() => new Generator<T3>().Generate(new Random(seed)));
+		//	Assert.That(ex.Message, Contains.Substring("NormalDistribution"),
+		//		"Exception message should be informative and contain at least the name of problematic type");
+		//}
 
 		//[Test]
 		//public void FailWithInformativeMessage_OnIncorrectForMethodCall()

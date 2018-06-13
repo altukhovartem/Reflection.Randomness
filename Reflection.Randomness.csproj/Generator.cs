@@ -11,13 +11,18 @@ namespace Reflection.Randomness
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class FromDistribution : Attribute
 	{
-		public Type TypeOfDistribution { get; set; }
 		public IContinousDistribution Distribution { get; set; }
 
 		public FromDistribution(Type typeOfDistribution, params object[] args)
 		{
-			this.TypeOfDistribution = typeOfDistribution;
-			Distribution = (IContinousDistribution)Activator.CreateInstance(typeOfDistribution, args);
+			try
+			{
+				Distribution = (IContinousDistribution)Activator.CreateInstance(typeOfDistribution, args);
+			}
+			catch
+			{
+				throw new ArgumentException($"{typeOfDistribution.Name}");
+			}
 		}
 
 		public double GetDistributionValue(Random random)
@@ -39,8 +44,17 @@ namespace Reflection.Randomness
 			PropertyInfo[] collectionOfProperties = typeof(T).GetProperties();
 			foreach (var prop in collectionOfProperties)
 			{
-				FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
-				staticDictionary.Add(prop, attribute?.Distribution);
+				try
+				{
+					FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
+					if (attribute != null)
+						staticDictionary.Add(prop, attribute.Distribution);
+				}
+				catch
+				{
+					throw new ArgumentException();
+				}
+
 			}
 		}
 
@@ -48,22 +62,31 @@ namespace Reflection.Randomness
 		{
 			object generatorInstance = Activator.CreateInstance(typeof(T));
 			PropertyInfo[] props = typeof(T).GetProperties();
-			double valueOfDistribution;
+			double? valueOfDistribution;
 
-			foreach (var prop in props)
+			foreach (var key in staticDictionary.Keys)
 			{
-				if (dynamicDictionary.ContainsKey(prop) && dynamicDictionary[prop] != null )
-				{
-					valueOfDistribution = dynamicDictionary[prop].Generate(random);
-					prop.SetValue(generatorInstance, valueOfDistribution);
-
-				}
-				else if (staticDictionary[prop] != null)
-				{
-					valueOfDistribution = staticDictionary[prop].Generate(random);
-					prop.SetValue(generatorInstance, valueOfDistribution);
-				}
+				if (dynamicDictionary.ContainsKey(key))
+					valueOfDistribution = dynamicDictionary[key].Generate(random);
+				else
+					valueOfDistribution = staticDictionary[key]?.Generate(random);
+				key.SetValue(generatorInstance, valueOfDistribution);
 			}
+
+			//foreach (var prop in props)
+			//{
+			//	if (dynamicDictionary.ContainsKey(prop) && dynamicDictionary[prop] != null)
+			//	{
+			//		valueOfDistribution = dynamicDictionary[prop].Generate(random);
+			//		prop.SetValue(generatorInstance, valueOfDistribution);
+
+			//	}
+			//	else if (staticDictionary[prop] != null)
+			//	{
+			//		valueOfDistribution = staticDictionary[prop].Generate(random);
+			//		prop.SetValue(generatorInstance, valueOfDistribution);
+			//	}
+			//}
 
 			return generatorInstance as T;
 		}
