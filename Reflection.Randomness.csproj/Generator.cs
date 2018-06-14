@@ -47,14 +47,13 @@ namespace Reflection.Randomness
 				try
 				{
 					FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
-					if (attribute != null)
-						staticDictionary.Add(prop, attribute.Distribution);
+					//if (attribute != null)
+					staticDictionary.Add(prop, attribute?.Distribution);
 				}
 				catch
 				{
 					throw new ArgumentException();
 				}
-
 			}
 		}
 
@@ -62,15 +61,20 @@ namespace Reflection.Randomness
 		{
 			object generatorInstance = Activator.CreateInstance(typeof(T));
 			PropertyInfo[] props = typeof(T).GetProperties();
-			double? valueOfDistribution;
+			double valueOfDistribution = 0;
 
 			foreach (var key in staticDictionary.Keys)
 			{
 				if (dynamicDictionary.ContainsKey(key))
+				{
 					valueOfDistribution = dynamicDictionary[key].Generate(random);
-				else
-					valueOfDistribution = staticDictionary[key]?.Generate(random);
-				key.SetValue(generatorInstance, valueOfDistribution);
+					key.SetValue(generatorInstance, valueOfDistribution);
+				}
+				else if (staticDictionary[key] != null)
+				{
+					valueOfDistribution = staticDictionary[key].Generate(random);
+					key.SetValue(generatorInstance, valueOfDistribution);
+				}
 			}
 
 			//foreach (var prop in props)
@@ -90,6 +94,8 @@ namespace Reflection.Randomness
 
 			return generatorInstance as T;
 		}
+
+
 	
 		public ISettable<T> For(Expression<Func<T, object>> p)
 		{
