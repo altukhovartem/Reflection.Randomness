@@ -11,7 +11,7 @@ namespace Reflection.Randomness
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class FromDistribution : Attribute
 	{
-		public IContinousDistribution Distribution { get; set; }
+		public IContinousDistribution Distribution { get; private set; }
 
 		public FromDistribution(Type typeOfDistribution, params object[] args)
 		{
@@ -19,10 +19,11 @@ namespace Reflection.Randomness
 			{
 				Distribution = (IContinousDistribution)Activator.CreateInstance(typeOfDistribution, args);
 			}
-			catch
+			catch(Exception e)
 			{
-				throw new ArgumentException($"{typeOfDistribution.Name}");
+				Console.WriteLine(e.Message);
 			}
+
 		}
 
 		public double GetDistributionValue(Random random)
@@ -34,10 +35,10 @@ namespace Reflection.Randomness
 	public class Generator<T>
 		where T : class
 	{
-		static Dictionary<PropertyInfo, IContinousDistribution> staticDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
-		public Dictionary<PropertyInfo, IContinousDistribution> dynamicDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
+		public static Dictionary<PropertyInfo, IContinousDistribution> staticDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();		
+        public Dictionary<PropertyInfo, IContinousDistribution> dynamicDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
 
-		public Generator(){}
+        public Generator(){}
 
 		static Generator()
 		{
