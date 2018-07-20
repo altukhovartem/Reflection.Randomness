@@ -11,31 +11,33 @@ namespace Reflection.Randomness
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class FromDistribution : Attribute
 	{
-		public IContinousDistribution Distribution { get; private set; }
+		//public IContinousDistribution Distribution { get; private set; }
+		private Type _distrType;
+		private object[] _args;
 
 		public FromDistribution(Type typeOfDistribution, params object[] args)
 		{
-			try
-			{
-				Distribution = (IContinousDistribution)Activator.CreateInstance(typeOfDistribution, args);
-			}
-			catch(Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
+			_distrType = typeOfDistribution;
+			_args = args;
 		}
 
-		public double GetDistributionValue(Random random)
+		public IContinousDistribution Create()
 		{
-			return Distribution.Generate(random);
+			try
+			{
+				return (IContinousDistribution)Activator.CreateInstance(_distrType, _args);
+			}
+			catch
+			{
+				throw new ArgumentException(_distrType.Name);
+			}
 		}
 	}
 
 	public class Generator<T>
 		where T : class
 	{
-		public static Dictionary<PropertyInfo, IContinousDistribution> staticDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();		
+		public static Dictionary<PropertyInfo, Lazy<IContinousDistribution>> staticDictionary = new Dictionary<PropertyInfo, Lazy<IContinousDistribution>>();		
         public Dictionary<PropertyInfo, IContinousDistribution> dynamicDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
 
         public Generator(){}
@@ -48,8 +50,15 @@ namespace Reflection.Randomness
 				try
 				{
 					FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
-					//if (attribute != null)
-					staticDictionary.Add(prop, attribute?.Distribution);
+					if (attribute != null)
+					{
+						Lazy<IContinousDistribution> lazyDistribution = new Lazy<IContinousDistribution>(() => attribute.Create());
+						staticDictionary.Add(prop, lazyDistribution);
+					}
+					else
+					{
+						staticDictionary.Add(prop, null);
+					}
 				}
 				catch
 				{
@@ -61,7 +70,6 @@ namespace Reflection.Randomness
 		public T Generate(Random random)
 		{
 			object generatorInstance = Activator.CreateInstance(typeof(T));
-			PropertyInfo[] props = typeof(T).GetProperties();
 			double valueOfDistribution = 0;
 
 			foreach (var key in staticDictionary.Keys)
@@ -73,25 +81,10 @@ namespace Reflection.Randomness
 				}
 				else if (staticDictionary[key] != null)
 				{
-					valueOfDistribution = staticDictionary[key].Generate(random);
+					valueOfDistribution = staticDictionary[key].Value.Generate(random);
 					key.SetValue(generatorInstance, valueOfDistribution);
 				}
 			}
-
-			//foreach (var prop in props)
-			//{
-			//	if (dynamicDictionary.ContainsKey(prop) && dynamicDictionary[prop] != null)
-			//	{
-			//		valueOfDistribution = dynamicDictionary[prop].Generate(random);
-			//		prop.SetValue(generatorInstance, valueOfDistribution);
-
-			//	}
-			//	else if (staticDictionary[prop] != null)
-			//	{
-			//		valueOfDistribution = staticDictionary[prop].Generate(random);
-			//		prop.SetValue(generatorInstance, valueOfDistribution);
-			//	}
-			//}
 
 			return generatorInstance as T;
 		}
