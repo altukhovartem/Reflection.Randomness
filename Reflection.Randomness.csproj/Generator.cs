@@ -93,14 +93,22 @@ namespace Reflection.Randomness
 	
 		public ISettable<T> For(Expression<Func<T, object>> p)
 		{
-			Type type = p.GetType();
-			Expression currentExpression = p.Body;
-			UnaryExpression unaryExpression = (UnaryExpression)currentExpression;
-			MemberExpression memberExpression = (MemberExpression)unaryExpression.Operand;
-			string name = memberExpression.Member.Name;
-			PropertyInfo prop = typeof(T).GetProperty(name);
-
-			return new TempObj<T>(prop, this);  
+			try
+			{
+				Type type = p.GetType();
+				Expression currentExpression = p.Body;
+				UnaryExpression unaryExpression = (UnaryExpression)currentExpression;
+				MemberExpression memberExpression = (MemberExpression)unaryExpression.Operand;
+				string name = memberExpression.Member.Name;
+				PropertyInfo prop = typeof(T).GetProperty(name);
+				if (prop == null)
+					throw new ArgumentException();
+				return new TempObj<T>(prop, this);  
+			}
+			catch
+			{
+				throw new ArgumentException();
+			}
 		}
 	}
 
