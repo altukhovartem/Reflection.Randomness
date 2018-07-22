@@ -11,7 +11,6 @@ namespace Reflection.Randomness
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class FromDistribution : Attribute
 	{
-		//public IContinousDistribution Distribution { get; private set; }
 		private Type _distrType;
 		private object[] _args;
 
@@ -35,7 +34,6 @@ namespace Reflection.Randomness
 	}
 
 	public class Generator<T>
-		where T : class
 	{
 		public static Dictionary<PropertyInfo, Lazy<IContinousDistribution>> staticDictionary = new Dictionary<PropertyInfo, Lazy<IContinousDistribution>>();		
         public Dictionary<PropertyInfo, IContinousDistribution> dynamicDictionary = new Dictionary<PropertyInfo, IContinousDistribution>();
@@ -47,22 +45,15 @@ namespace Reflection.Randomness
 			PropertyInfo[] collectionOfProperties = typeof(T).GetProperties();
 			foreach (var prop in collectionOfProperties)
 			{
-				try
+				FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
+				if (attribute != null)
 				{
-					FromDistribution attribute = Attribute.GetCustomAttribute(prop, typeof(FromDistribution)) as FromDistribution;
-					if (attribute != null)
-					{
-						Lazy<IContinousDistribution> lazyDistribution = new Lazy<IContinousDistribution>(() => attribute.Create());
-						staticDictionary.Add(prop, lazyDistribution);
-					}
-					else
-					{
-						staticDictionary.Add(prop, null);
-					}
+					Lazy<IContinousDistribution> lazyDistribution = new Lazy<IContinousDistribution>(() => attribute.Create());
+					staticDictionary.Add(prop, lazyDistribution);
 				}
-				catch
+				else
 				{
-					throw new ArgumentException();
+					staticDictionary.Add(prop, null);
 				}
 			}
 		}
@@ -86,7 +77,7 @@ namespace Reflection.Randomness
 				}
 			}
 
-			return generatorInstance as T;
+			return (T)generatorInstance;
 		}
 
 
@@ -113,27 +104,27 @@ namespace Reflection.Randomness
 	}
 
 	public interface ISettable<T>
-		where T : class
+		
 	{
 		Generator<T> Set(IContinousDistribution distribution);
 	}
 
 	public class TempObj<T> : ISettable<T>
-		where T : class
+		
 	{
-		public PropertyInfo classProperty { get; set; }
-		public Generator<T> currentGenerator { get; set; }
+		private readonly PropertyInfo _classProperty;
+		private readonly Generator<T> _currentGenerator;
 
 		public TempObj(PropertyInfo property, Generator<T> generator)
 		{
-			this.classProperty = property;
-			this.currentGenerator = generator;
+			_classProperty = property;
+			_currentGenerator = generator;
 		}
 
 		public Generator<T> Set(IContinousDistribution distribution)
 		{
-			currentGenerator.dynamicDictionary.Add(classProperty, distribution);
-			return currentGenerator;
+			_currentGenerator.dynamicDictionary.Add(_classProperty, distribution);
+			return _currentGenerator;
 		}
 	}
 }
